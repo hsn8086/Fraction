@@ -56,11 +56,41 @@ class Fraction:
         else:
             return self - Fraction(other)
 
+    def __mul__(self, other):
+        if type(other) == Fraction:
+            other: Fraction
+            rt = Fraction(1)
+            rt.numerator = self.numerator * other.numerator
+            rt.denominator = self.denominator * other.denominator
+            rt.simplify()
+            return rt
+        else:
+            return self * Fraction(other)
+
+    def __truediv__(self, other):
+        if type(other) == Fraction:
+            other: Fraction
+            rt = Fraction(1)
+            rt.numerator = self.numerator * other.denominator
+            rt.denominator = self.denominator * other.numerator
+            rt.simplify()
+            return rt
+        else:
+            return self / Fraction(other)
+
+    def __floordiv__(self, other):
+        return Fraction(float(self) // float(other))
+
+    def __float__(self):
+        return self.numerator / self.denominator
+
     def __str__(self):
+        if self.denominator == 1:
+            return str(self.numerator)
         if self.numerator:
             return f'{self.numerator}/{self.denominator}'
         else:
             return '0'
 
 
-
+print(Fraction(6) // 4)
