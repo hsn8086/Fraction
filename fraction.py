@@ -1,7 +1,4 @@
-import cProfile
 import math
-import random
-from typing import Union
 
 
 class Fraction:
@@ -140,6 +137,9 @@ class Fraction:
     def __float__(self):
         return self.numerator / self.denominator
 
+    def __int__(self):
+        return self.numerator // self.denominator
+
     def __str__(self):
         if self.denominator == 1:
             return str(self.numerator)
@@ -147,5 +147,3 @@ class Fraction:
             return f'{self.numerator}/{self.denominator}'
         else:
             return '0'
-
-
