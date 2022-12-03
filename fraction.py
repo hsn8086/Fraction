@@ -30,6 +30,9 @@ class Fraction:
         if hcf:
             self.numerator = int(self.numerator / hcf)
             self.denominator = int(self.denominator / hcf)
+        if self.denominator < 0:
+            self.denominator = -self.denominator
+            self.numerator = -self.numerator
 
     def __add__(self, other):
         if type(other) == Fraction:
@@ -39,9 +42,25 @@ class Fraction:
             rt.denominator = self.denominator * other.denominator
             rt.simplify()
             return rt
+        else:
+            return self + Fraction(other)
+
+    def __sub__(self, other):
+        if type(other) == Fraction:
+            other: Fraction
+            rt = Fraction(1)
+            rt.numerator = self.numerator * other.denominator - self.denominator * other.numerator
+            rt.denominator = self.denominator * other.denominator
+            rt.simplify()
+            return rt
+        else:
+            return self - Fraction(other)
 
     def __str__(self):
-        return f'{self.numerator}/{self.denominator}'
+        if self.numerator:
+            return f'{self.numerator}/{self.denominator}'
+        else:
+            return '0'
 
 
 
