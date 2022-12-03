@@ -25,12 +25,11 @@ class Fraction:
             self.denominator = num.denominator
             self.numerator = num.numerator
             self.simplify()
+        elif type(num) == tuple:
+            self.numerator, self.denominator = num
+            self.simplify()
         else:
             self.__init__(float(num), precision)
-
-    def set(self, numerator, denominator):
-        self.numerator = numerator
-        self.denominator = denominator
 
     def simplify(self):
         hcf = math.gcd(self.denominator, self.numerator)
@@ -44,9 +43,8 @@ class Fraction:
     def __add__(self, other):
         if type(other) == Fraction:
             other: Fraction
-            rt = Fraction(1)
-            rt.numerator = self.numerator * other.denominator + self.denominator * other.numerator
-            rt.denominator = self.denominator * other.denominator
+            rt = Fraction((self.numerator * other.denominator + self.denominator * other.numerator,
+                           self.denominator * other.denominator))
             rt.simplify()
             return rt
         else:
@@ -55,9 +53,8 @@ class Fraction:
     def __sub__(self, other):
         if type(other) == Fraction:
             other: Fraction
-            rt = Fraction(1)
-            rt.numerator = self.numerator * other.denominator - self.denominator * other.numerator
-            rt.denominator = self.denominator * other.denominator
+            rt = Fraction((self.numerator * other.denominator - self.denominator * other.numerator,
+                           self.denominator * other.denominator))
             rt.simplify()
             return rt
         else:
@@ -66,9 +63,7 @@ class Fraction:
     def __mul__(self, other):
         if type(other) == Fraction:
             other: Fraction
-            rt = Fraction(1)
-            rt.numerator = self.numerator * other.numerator
-            rt.denominator = self.denominator * other.denominator
+            rt = Fraction((self.numerator * other.numerator, self.denominator * other.denominator))
             rt.simplify()
             return rt
         else:
@@ -77,16 +72,16 @@ class Fraction:
     def __truediv__(self, other):
         if type(other) == Fraction:
             other: Fraction
-            rt = Fraction(1)
-            rt.numerator = self.numerator * other.denominator
-            rt.denominator = self.denominator * other.numerator
+            rt = Fraction((self.numerator * other.denominator, self.denominator * other.numerator))
             rt.simplify()
             return rt
         else:
+
             return self / Fraction(other)
 
     def __floordiv__(self, other):
-        return Fraction(float(self) // float(other))
+
+        return Fraction(int(float(self / other)))
 
     def __mod__(self, other):
         return Fraction(self - self // other * other)
@@ -95,18 +90,14 @@ class Fraction:
         return self // other, self % other
 
     def __pow__(self, power, modulo=None):
-        rt = Fraction(1)
-        rt.denominator = self.denominator ** power
-        rt.numerator = self.numerator ** power
+        rt = Fraction((self.numerator ** power, self.denominator ** power))
         return rt % modulo if modulo else rt
 
     def __bool__(self):
         return self.numerator != 0
 
     def __neg__(self):
-        rt = Fraction()
-        rt.set(-self.numerator, self.denominator)
-        return rt
+        return Fraction((-self.numerator, self.denominator))
 
     def __pos__(self):
         return self
@@ -116,19 +107,33 @@ class Fraction:
 
     # compare
     def __lt__(self, other):
-        return float(self) < float(other)
+        if type(other) == Fraction:
+            other: Fraction
+            self.simplify()
+            other.simplify()
+            return self.numerator * other.denominator < self.denominator * other.numerator
+        else:
+            self.simplify()
+            return self.numerator < self.denominator * other
 
     def __le__(self, other):
-        return float(self) <= float(other)
+        return self < other or self == other
 
     def __gt__(self, other):
-        return float(self) > float(other)
+        if type(other) == Fraction:
+            other: Fraction
+            self.simplify()
+            other.simplify()
+            return self.numerator * other.denominator > self.denominator * other.numerator
+        else:
+            self.simplify()
+            return self.numerator > self.denominator * other
 
     def __ge__(self, other):
-        return float(self) >= float(other)
+        return self > other or self == other
 
     def __eq__(self, other):
-        return float(self) == float(other)
+        return (self - other).numerator == 0
 
     def __ne__(self, other):
         return not self == other
