@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='fraction',
-    version='1.0.0',
+    version='1.0.1',
     packages=[''],
     url='https://github.com/hsn8086/Fraction',
     license='MIT',
