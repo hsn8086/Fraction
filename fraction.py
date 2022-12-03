@@ -31,6 +31,10 @@ class Fraction:
         else:
             self.__init__(float(num), precision)
 
+    def set(self, numerator, denominator):
+        self.numerator = numerator
+        self.denominator = denominator
+
     def simplify(self):
         hcf = math.gcd(self.denominator, self.numerator)
         if hcf:
@@ -99,8 +103,19 @@ class Fraction:
         rt.numerator = self.numerator ** power
         return rt % modulo if modulo else rt
 
-    '''def __and__(self, other):
-        return self & other'''
+    def __bool__(self):
+        return self.numerator != 0
+
+    def __neg__(self):
+        rt = Fraction()
+        rt.set(-self.numerator, self.denominator)
+        return rt
+
+    def __pos__(self):
+        return self
+
+    def __abs__(self):
+        return -self if self < 0 else self
 
     # compare
     def __lt__(self, other):
@@ -132,6 +147,5 @@ class Fraction:
             return f'{self.numerator}/{self.denominator}'
         else:
             return '0'
-
 
 
