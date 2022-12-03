@@ -88,7 +88,10 @@ class Fraction:
         return Fraction(float(self) // float(other))
 
     def __mod__(self, other):
-        return self - self // other * other
+        return Fraction(self - self // other * other)
+
+    def __divmod__(self, other):
+        return self // other, self % other
 
     def __float__(self):
         return self.numerator / self.denominator
@@ -100,3 +103,6 @@ class Fraction:
             return f'{self.numerator}/{self.denominator}'
         else:
             return '0'
+
+
+print(Fraction(6) % 10)
