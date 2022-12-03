@@ -93,4 +93,4 @@ class Fraction:
             return '0'
 
 
-print(Fraction(6) // 4)
+
