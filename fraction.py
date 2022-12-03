@@ -93,6 +93,12 @@ class Fraction:
     def __divmod__(self, other):
         return self // other, self % other
 
+    def __pow__(self, power, modulo=None):
+        rt = Fraction(1)
+        rt.denominator = self.denominator ** power
+        rt.numerator = self.numerator ** power
+        return rt % modulo if modulo else rt
+
     def __float__(self):
         return self.numerator / self.denominator
 
@@ -105,4 +111,4 @@ class Fraction:
             return '0'
 
 
-print(Fraction(6) % 10)
+
