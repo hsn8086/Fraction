@@ -134,4 +134,4 @@ class Fraction:
             return '0'
 
 
-print(Fraction(3) != 2)
+
