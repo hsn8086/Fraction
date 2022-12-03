@@ -5,7 +5,7 @@ from typing import Union
 
 
 class Fraction:
-    def __init__(self, num: Union[int, float], precision=10):
+    def __init__(self, num, precision=10):
         self.denominator = 1
         self.numerator = 1
         if type(num) == int:
@@ -24,6 +24,12 @@ class Fraction:
             # 化简
             self.simplify()
             # 注:分母为1*precision_int
+        elif type(num) == Fraction:
+            self.denominator = num.denominator
+            self.numerator = num.numerator
+            self.simplify()
+        else:
+            self.__init__(float(num), precision)
 
     def simplify(self):
         hcf = math.gcd(self.denominator, self.numerator)
@@ -81,6 +87,9 @@ class Fraction:
     def __floordiv__(self, other):
         return Fraction(float(self) // float(other))
 
+    def __mod__(self, other):
+        return self - self // other * other
+
     def __float__(self):
         return self.numerator / self.denominator
 
@@ -91,6 +100,3 @@ class Fraction:
             return f'{self.numerator}/{self.denominator}'
         else:
             return '0'
-
-
-
